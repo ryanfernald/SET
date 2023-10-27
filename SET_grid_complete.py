@@ -179,7 +179,7 @@ def countdown(time_left):
         
 # Create a text box
 golden_rule = tk.Label(root, text="GOLDEN RULE:\nIf two are, and one is not, then it is not a set",
-                       relief="solid",borderwidth = 5, font=("Ubuntu Light", 16), bg="white")
+                       relief="solid",borderwidth = 5, font=("Ubuntu Light", 23), bg="white")
 golden_rule.grid(row = 3, column = 3, columnspan = 3)
 
 # Create a variable to keep track of the number of sets found
