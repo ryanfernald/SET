@@ -124,6 +124,8 @@ def play():
 def refresh_images():
     remove_message()
     for button in buttons:
+        if button["relief"] == "sunken":
+            button.config(relief="groove", bd=4, highlightbackground="white")
         # Choose a random image file
         image_file = random.choice(image_files)
         # Load the image
