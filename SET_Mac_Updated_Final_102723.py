@@ -175,21 +175,48 @@ play_button.grid(row=1, column=5)
 timer_label = tk.Label(root, text="5:00",relief="solid",borderwidth = 5, font=("Ubuntu Light", 40))
 timer_label.grid(row=0, column=5)
 
+timer_running = False
+
+# Initialize the timer_running variable and timer_id
+timer_running = False
+timer_id = None
+
 # Define a function to start the timer.
 def start_timer():
+    global timer_running, timer_id
+    if timer_running:
+        reset_timer()
     countdown(300)
 
 def countdown(time_left):
+    global timer_running, timer_id
     if time_left > 0:
+        timer_running = True
         mins, secs = divmod(time_left, 60)
         timer = '{:2d}:{:02d}'.format(mins, secs) #{:02d} for a timer greater than single digit minutes
         timer_label.config(text=timer)
-        root.after(1000, countdown, time_left - 1)
+        # Store the id of the scheduled event
+        timer_id = root.after(1000, countdown, time_left - 1)
     else:
-        timer_label.config(text="Time's up!")
-        #end of game sound
-        pygame.mixer.music.load(resource_path("other/sound.mp3"))
-        pygame.mixer.music.play()
+        end_timer()
+
+def end_timer():
+    global timer_running, timer_id
+    # Cancel the scheduled event
+    root.after_cancel(timer_id)
+    timer_label.config(text="Time's up!")
+    #end of game sound
+    pygame.mixer.music.load(resource_path("other/end.mp3"))
+    pygame.mixer.music.play()
+    timer_running = False
+
+def reset_timer():
+    global timer_running, timer_id
+     # Cancel the current timer if it's running
+    if timer_running:
+        root.after_cancel(timer_id)
+    timer_running = False
+    start_timer()
         
 # Create a text box
 golden_rule = tk.Label(root, text="GOLDEN RULE:\nIf two are, and one is not, then it is not a set",
